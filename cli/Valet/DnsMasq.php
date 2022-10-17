@@ -142,8 +142,8 @@ class DnsMasq
      */
     public function dnsmasqSetup()
     {
-        $this->pm->ensureInstalled('dnsmasq');
-        $this->sm->enable('dnsmasq');
+        $this->pm->ensureInstalled('dnsmasq-base');
+        $this->sm->enable('dnsmasq-base');
 
         $this->files->ensureDirExists('/etc/NetworkManager/conf.d');
         $this->files->ensureDirExists('/etc/dnsmasq.d');
@@ -172,7 +172,7 @@ class DnsMasq
     public function updateDomain($oldDomain, $newDomain)
     {
         $this->createCustomConfigFile($newDomain);
-        $this->sm->restart('dnsmasq');
+        $this->sm->restart('dnsmasq-base');
     }
 
     /**
@@ -198,7 +198,7 @@ class DnsMasq
         $this->files->commentLine('IGNORE_RESOLVCONF', '/etc/default/dnsmasq');
 
         $this->pm->nmRestart($this->sm);
-        $this->sm->restart('dnsmasq');
+        $this->sm->restart('dnsmasq-base');
 
         info('Valet DNS changes have been rolled back');
         warning('If your system depended on systemd-resolved (like Ubuntu 17.04), please enable it manually');
